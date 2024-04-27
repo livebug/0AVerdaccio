@@ -1,2 +1,36 @@
-# æ‰“åŒ…æœ€å¤§100MB
-bz.exe c -v:100MB  ./release/storage.zip .\storage\
+# ÉèÖÃÒªÉ¸Ñ¡ºÍÉ¾³ıµÄÎÄ¼şºÍÎÄ¼ş¼ĞµÄÄ¿Â¼Â·¾¶
+$folderPath = "E:\0AVerdaccio\storage"
+# ÉèÖÃÒªÉ¸Ñ¡ºÍÉ¾³ıµÄÎÄ¼şºÍÎÄ¼ş¼ĞµÄĞŞ¸ÄÈÕÆÚãĞÖµ£¨ÒÔÌìÎªµ¥Î»£©
+# $daysThreshold = 30
+# 2024Äê4ÔÂ27ÈÕ 22:42:34
+# »ñÈ¡µ±Ç°ÈÕÆÚºÍÖ¸¶¨µÄÈÕÆÚãĞÖµÖ®¼äµÄÈÕÆÚ
+$thresholdDate = [Datetime]::ParseExact('2024/04/28 00:10', 'yyyy/MM/dd HH:mm', $null)
+
+echo É¾³ıtemp_storage
+rm -Force -r temp_storage/
+echo ĞÂ½¨temp_storage
+mkdir temp_storage/
+echo ¸´ÖÆÎÄ¼ş
+# É¸Ñ¡
+Get-ChildItem -Path $folderPath -Recurse -File | Where-Object { $_.LastWriteTime -gt $thresholdDate }  |  ForEach-Object { 
+    $_.FullName
+    # ¿½±´ÎÄ¼ş²¢±£³ÖÏàÓ¦µÄÄ¿Â¼½á¹¹
+    $fileRelativePath = (Resolve-Path -Path $_.FullName  -Relative)
+
+    # Copy-Item -Path $_.FullName -Destination temp_storage/ -Recurse -Force
+    $destination =  (Split-Path -Path $fileRelativePath)
+    $destinationDirectory = (Join-Path -Path "temp_storage\" -ChildPath $destination)
+    if (!(Test-Path -Path $destinationDirectory)) {
+        New-Item -ItemType Directory -Path $destinationDirectory -Force
+    }
+    Copy-Item -Path $_.FullName -Destination $destinationDirectory -Force
+}
+# É¸Ñ¡²¢É¾³ıÎÄ¼ş
+# Get-ChildItem -Path $folderPath -Recurse -File | Where-Object { $_.LastWriteTime -lt $thresholdDate } | Remove-Item -Force
+
+# É¸Ñ¡²¢É¾³ı¿ÕÎÄ¼ş¼Ğ
+# Get-ChildItem -Path $folderPath -Recurse -Directory | Where-Object { $_.LastWriteTime -lt $thresholdDate -and @(Get-ChildItem -Path $_.FullName -File).Count -eq 0 } | Remove-Item -Force -Recurse
+
+
+# ´ò°ü×î´ó100MB
+bz.exe c -v:100MB  ./release/storage.zip .\temp_storage\storage 

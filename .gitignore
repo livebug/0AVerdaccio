@@ -1,4 +1,5 @@
-storage/
+*storage/
+release/
 test/
 *.zip
 node_modules
