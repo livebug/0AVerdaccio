@@ -1,1 +1,4 @@
 storage/
+test/
+*.zip
+node_modules
