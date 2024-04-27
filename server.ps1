@@ -1,0 +1,1 @@
+verdaccio.ps1 --config ./config.yaml
