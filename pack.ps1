@@ -4,7 +4,7 @@ $folderPath = "E:\0AVerdaccio\storage"
 # $daysThreshold = 30
 # 2024年4月27日 22:42:34
 # 获取当前日期和指定的日期阈值之间的日期
-$thresholdDate = [Datetime]::ParseExact('2024/04/28 00:10', 'yyyy/MM/dd HH:mm', $null)
+$thresholdDate = [Datetime]::ParseExact('2024/04/28 22:00', 'yyyy/MM/dd HH:mm', $null)
 
 echo 删除temp_storage
 rm -Force -r temp_storage/

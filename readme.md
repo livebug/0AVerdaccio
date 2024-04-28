@@ -28,4 +28,34 @@ Logged in on http://localhost:4873/.
 $ npm set registry http://localhost:4873/
 ```
 
+## 4.使用pm2 来后台启动
+### 4.1 基本安装
+```bash
+# 安装pm2 
+npm i -g pm2
+
+pm2 list # 检查状态
+
+# 启动应用
+# windows 中使用 json启动
+pm2 start ./ecosystem.config.js
+
+# 查看状态
+pm2 status 
+```
+### 4.2 日志管理
+安装插件`pm2-logrotate`
+```bash
+pm2 install pm2-logrotate # 用pm2安装不是npm
+# 设置最大大小
+pm2 set pm2-logrotate:max_size 1K
+pm2 restart all #重启生效
+```
+### 4.3 开机自启
+```bash
+# Windows需要安装其他东西
+npm install pm2-windows-startup -g
+pm2-startup install
+pm2 save # 保存当前应用，重启时起作用
+```
 
